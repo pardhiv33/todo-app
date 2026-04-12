@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Task Tribune</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #F7F2E8;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    .wrap { max-width: 680px; margin: 0 auto; }
+
+    /* ── Masthead ── */
+    .masthead {
+      text-align: center;
+      padding: 28px 24px 20px;
+      background: #fff;
+      border: 1px solid #D4C5A9;
+      border-bottom: 3px double #B8860B;
+    }
+
+    .masthead-rule {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .masthead-rule span {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: #B8860B;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .masthead-rule::before,
+    .masthead-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #B8860B;
+    }
+
+    .masthead h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      color: #1a1a1a;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .masthead p {
+      font-size: 11px;
+      color: #999;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    .masthead-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #E8DCC8;
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #1a1a1a;
+      margin-bottom: 24px;
+    }
+
+    .stat-cell {
+      padding: 16px 10px;
+      text-align: center;
+      border-right: 1px solid #333;
+    }
+
+    .stat-cell:last-child { border-right: none; }
+
+    .stat-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: #F5C842;
+      line-height: 1;
+    }
+
+    .stat-l {
+      font-size: 9px;
+      color: #aaa;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── Column layout ── */
+    .col-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 560px) {
+      .col-layout { grid-template-columns: 1fr; }
+      .masthead h1 { font-size: 32px; }
+    }
+
+    /* ── Section heading ── */
+    .section-head {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 14px;
+    }
+
+    /* ── Form panel ── */
+    .form-panel {
+      background: #fff;
+      border: 1px solid #D4C5A9;
+      padding: 20px;
+    }
+
+    .field { margin-bottom: 12px; }
+
+    .field label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .inp {
+      width: 100%;
+      background: #FAFAF7;
+      border: 1px solid #D4C5A9;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      color: #1a1a1a;
+      padding: 9px 12px;
+      outline: none;
+      border-radius: 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .inp:focus { border-color: #B8860B; background: #fff; }
+    .inp::placeholder { color: #ccc; }
+    textarea.inp { min-height: 70px; resize: vertical; }
+
+    .add-btn {
+      width: 100%;
+      background: #1a1a1a;
+      color: #F5C842;
+      border: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+
+    .add-btn:hover { background: #B8860B; }
+
+    /* ── Quick ref panel ── */
+    .ref-panel {
+      background: #fff;
+      border: 1px solid #D4C5A9;
+      padding: 20px;
+    }
+
+    .ref-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px dashed #eee;
+      font-size: 10px;
+    }
+
+    .ref-row:last-child { border-bottom: none; }
+
+    .ref-row .lbl {
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #555;
+    }
+
+    .quote-box {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: #F7F2E8;
+      border-left: 3px solid #B8860B;
+    }
+
+    .quote-box p {
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      font-style: italic;
+      color: #777;
+      line-height: 1.7;
+    }
+
+    /* ── Archive section ── */
+    .archive-panel {
+      background: #fff;
+      border: 1px solid #D4C5A9;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    /* ── Filters ── */
+    .filters-row {
+      display: flex;
+      border: 1px solid #D4C5A9;
+      margin-bottom: 16px;
+    }
+
+    .fbtn {
+      flex: 1;
+      padding: 9px 6px;
+      background: transparent;
+      border: none;
+      border-right: 1px solid #D4C5A9;
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: #999;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .fbtn:last-child { border-right: none; }
+    .fbtn.active { background: #1a1a1a; color: #F5C842; }
+    .fbtn:hover:not(.active) { background: #F7F2E8; color: #555; }
+
+    /* ── Todo cards ── */
+    .todo-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .todo-card {
+      background: #FAFAF7;
+      border: 1px solid #D4C5A9;
+      border-left: 4px solid #B8860B;
+      padding: 14px 16px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .todo-card:hover { background: #fff; }
+    .todo-card.done { border-left-color: #4CAF50; opacity: 0.8; }
+    .todo-card.done .t-title { text-decoration: line-through; color: #bbb; }
+
+    .t-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 5px;
+    }
+
+    .t-desc {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .t-meta {
+      font-size: 9px;
+      color: #B8860B;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .t-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm {
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 13px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+    }
+
+    .btn-done  { color: #2e7d32; border-color: #2e7d32; }
+    .btn-done:hover  { background: #2e7d32; color: #fff; }
+    .btn-undo  { color: #B8860B; border-color: #B8860B; }
+    .btn-undo:hover  { background: #B8860B; color: #fff; }
+    .btn-del   { color: #c62828; border-color: #c62828; }
+    .btn-del:hover   { background: #c62828; color: #fff; }
+
+    /* ── Empty ── */
+    .empty {
+      text-align: center;
+      padding: 36px 20px;
+      color: #bbb;
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-style: italic;
+      border: 1px dashed #D4C5A9;
+    }
+
+    /* ── Toast ── */
+    .toast {
+      background: #1a1a1a;
+      color: #F5C842;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      text-align: center;
+      margin-top: 14px;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .toast.show { opacity: 1; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 14px;
+      background: #1a1a1a;
+      color: #555;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .footer span { color: #B8860B; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="masthead-rule"><span>Est. 2024</span></div>
+    <h1>The Task Tribune</h1>
+    <p>Your personal productivity broadsheet</p>
+    <div class="masthead-bottom">
+      <span id="date-lbl">Today</span>
+      <span>&#9670; All the tasks fit to print &#9670;</span>
+      <span id="time-lbl">--:--</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-cell">
+      <div class="stat-n" id="s-total">0</div>
+      <div class="stat-l">Total</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n" id="s-pending">0</div>
+      <div class="stat-l">Pending</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-n" id="s-done">0</div>
+      <div class="stat-l">Completed</div>
+    </div>
+  </div>
+
+  <!-- Two column: form + quick ref -->
+  <div class="col-layout">
+    <div>
+      <div class="section-head">File a Dispatch</div>
+      <div class="form-panel">
+        <div class="field">
+          <label>Task Headline</label>
+          <input class="inp" type="text" id="t-title" placeholder="What needs to be done?"/>
+        </div>
+        <div class="field">
+          <label>Details</label>
+          <textarea class="inp" id="t-desc" placeholder="Additional notes..."></textarea>
+        </div>
+        <button class="add-btn" onclick="createTodo()">+ Publish Task</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-head">Quick Reference</div>
+      <div class="ref-panel">
+        <div class="ref-row">
+          <span class="lbl">Mark Done</span>
+          <span style="color:#2e7d32;font-weight:700;font-size:11px">Green button</span>
+        </div>
+        <div class="ref-row">
+          <span class="lbl">Undo Complete</span>
+          <span style="color:#B8860B;font-weight:700;font-size:11px">Gold button</span>
+        </div>
+        <div class="ref-row">
+          <span class="lbl">Delete Task</span>
+          <span style="color:#c62828;font-weight:700;font-size:11px">Red button</span>
+        </div>
+        <div class="ref-row">
+          <span class="lbl">Filter View</span>
+          <span style="color:#1a1a1a;font-weight:700;font-size:11px">Top tabs</span>
+        </div>
+        <div class="quote-box">
+          <p>"A task well recorded is a task half done."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Archive -->
+  <div class="archive-panel">
+    <div class="section-head">The Archive</div>
+    <div class="filters-row">
+      <button class="fbtn active" onclick="setFilter('all',this)">All Dispatches</button>
+      <button class="fbtn" onclick="setFilter('pending',this)">Pending</button>
+      <button class="fbtn" onclick="setFilter('completed',this)">Completed</button>
+    </div>
+    <div class="todo-list" id="todo-list">
+      <div class="empty">No dispatches on record yet.</div>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <div class="footer">
+    &#9670; <span>The Task Tribune</span> &#9670;
+    All Rights Reserved &#9670;
+    <span id="yr"></span> &#9670;
+  </div>
+
+</div>
+
+<script>
+  const API = 'http://localhost:8080/api/todos';
+  let all = [], filter = 'all';
+
+  function tick() {
+    const n = new Date();
+    document.getElementById('date-lbl').textContent =
+      n.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    document.getElementById('time-lbl').textContent =
+      n.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    document.getElementById('yr').textContent = n.getFullYear();
+  }
+  tick(); setInterval(tick, 30000);
+
+  async function load() {
+    try {
+      const r = await fetch(API);
+      all = await r.json();
+      updateStats(); render();
+    } catch(e) {
+      document.getElementById('todo-list').innerHTML =
+        '<div class="empty">Could not connect to server.<br>Is the app running on port 8080?</div>';
+    }
+  }
+
+  function render() {
+    const el = document.getElementById('todo-list');
+    let list = all;
+    if (filter === 'pending')   list = all.filter(t => !t.completed);
+    if (filter === 'completed') list = all.filter(t =>  t.completed);
+    if (!list.length) {
+      el.innerHTML = '<div class="empty">No dispatches in this section.</div>';
+      return;
+    }
+    el.innerHTML = list.map(t => `
+      <div class="todo-card ${t.completed ? 'done' : ''}">
+        <div class="t-title">${esc(t.title)}</div>
+        ${t.description ? `<div class="t-desc">${esc(t.description)}</div>` : ''}
+        <div class="t-meta">Filed: ${fmt(t.createdAt)}</div>
+        <div class="t-actions">
+          ${!t.completed
+            ? `<button class="btn-sm btn-done" onclick="markDone(${t.id})">&#10003; Mark Done</button>`
+            : `<button class="btn-sm btn-undo" onclick="undoDone(${t.id})">&#8592; Undo</button>`
+          }
+          <button class="btn-sm btn-del" onclick="del(${t.id})">&#10005; Delete</button>
+        </div>
+      </div>`).join('');
+  }
+
+  function updateStats() {
+    const done = all.filter(t => t.completed).length;
+    document.getElementById('s-total').textContent   = all.length;
+    document.getElementById('s-pending').textContent = all.length - done;
+    document.getElementById('s-done').textContent    = done;
+  }
+
+  async function createTodo() {
+    const title       = document.getElementById('t-title').value.trim();
+    const description = document.getElementById('t-desc').value.trim();
+    if (!title) { toast('Please enter a task headline!'); return; }
+    try {
+      const r = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description })
+      });
+      if (r.ok) {
+        document.getElementById('t-title').value = '';
+        document.getElementById('t-desc').value  = '';
+        toast('Task published!'); load();
+      }
+    } catch(e) { toast('Failed to publish.'); }
+  }
+
+  async function markDone(id) {
+    const t = all.find(x => x.id === id);
+    try {
+      await fetch(`${API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: t.title, description: t.description, completed: true })
+      });
+      toast('Task marked as done!'); load();
+    } catch(e) { toast('Error updating.'); }
+  }
+
+  async function undoDone(id) {
+    const t = all.find(x => x.id === id);
+    try {
+      await fetch(`${API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: t.title, description: t.description, completed: false })
+      });
+      toast('Moved back to pending!'); load();
+    } catch(e) { toast('Error undoing.'); }
+  }
+
+  async function del(id) {
+    try {
+      await fetch(`${API}/${id}`, { method: 'DELETE' });
+      toast('Task deleted.'); load();
+    } catch(e) { toast('Error deleting.'); }
+  }
+
+  function setFilter(f, btn) {
+    filter = f;
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); render();
+  }
+
+  function fmt(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('en-IN',
+      { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function esc(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  load();
+</script>
+</body>
+</html>

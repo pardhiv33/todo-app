@@ -1,0 +1,26 @@
+# Maven
+target/
+*.class
+*.jar
+
+# IDE
+.idea/
+.eclipse/
+*.iml
+.project
+.classpath
+.settings/
+
+# Environment
+.env
+*.env
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# OS
+.DS_Store
+Thumbs.db
