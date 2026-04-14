@@ -1,0 +1,6 @@
+aws_region  = "ap-south-1"
+app_name    = "todo-app"
+environment = "prod"
+db_name     = "tododb"
+db_username = "admin"
+db_password = "1234567890"
