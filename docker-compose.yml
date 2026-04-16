@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
 
   mysql:
@@ -8,10 +10,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tododb
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
       interval: 10s
@@ -25,9 +29,9 @@ services:
     networks:
       - todo-network
     ports:
-      - "9090:8080"
+      - "8080:8080"   # 👉 access via localhost:9090
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev   # 🔥 IMPORTANT FIX
       DB_HOST: todo-mysql
       DB_NAME: tododb
       DB_USER: root
